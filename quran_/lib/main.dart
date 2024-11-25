@@ -58,15 +58,11 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     return Scaffold(
       backgroundColor: Colors.amber[50],
       body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          SizedBox(
-            height: 50,
-          ),
           Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              SizedBox(
-                width: 120,
-              ),
               Text(
                 "Quran App",
                 style: TextStyle(
@@ -78,10 +74,8 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
             ],
           ),
           Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              SizedBox(
-                width: 60,
-              ),
               Text(
                 "Har kuni Quron o'rganing",
                 style: TextStyle(
@@ -100,7 +94,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
             child: Stack(
               children: [
                 Positioned(
-                  left: 32,
+                  left: 85,
                   child: Container(
                     height: 530,
                     width: 330,
@@ -120,7 +114,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
                 ),
                 Positioned(
                   top: 480,
-                  left: 65,
+                  left: 120,
                   child: GestureDetector(
                     onTap: () {
                       Navigator.push(
@@ -206,6 +200,7 @@ class _SahifaState extends State<Sahifa> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           SizedBox(height: 50),
           Row(
@@ -260,14 +255,17 @@ class _SahifaState extends State<Sahifa> {
             child: Padding(
               padding: EdgeInsets.all(8.5),
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Column(
                         children: [
                           Text(
                             "Quroni karimning\n  30 Pora",
                             style: TextStyle(
+                              fontSize: 20,
                               fontWeight: FontWeight.w900,
                             ),
                           ),
@@ -318,29 +316,37 @@ class _SahifaState extends State<Sahifa> {
                       ),
                       child: Padding(
                         padding: EdgeInsets.all(10),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                        child: Row(
                           children: [
                             Text(
-                              "${data[index]['englishName']}",
+                              "${data[index]['number']}.  ",
                               style: TextStyle(
-                                fontSize: 22,
+                                fontSize: 25,
+                                color: Colors.black,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
                             Text(
-                              "${data[index]['name']}",
+                              "${data[index]['englishName']},   ",
                               style: TextStyle(
-                                fontSize: 18,
-                                color: Colors.grey[700],
+                                fontSize: 22,
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Text(
+                              "${data[index]['name']},   ",
+                              style: TextStyle(
+                                fontSize: 20,
+                                color: Colors.black,
                               ),
                             ),
                             SizedBox(height: 5),
                             Text(
                               "${data[index]['revelationType']}",
                               style: TextStyle(
-                                fontSize: 16,
-                                color: Colors.grey[600],
+                                fontSize: 20,
+                                color: Colors.black,
                               ),
                             ),
                           ],
@@ -376,8 +382,14 @@ class _SurahDetailState extends State<SurahDetail> {
   void initState() {
     super.initState();
     // Load the audio for this Surah
-    String audioUrl = widget.surahData['audioUrl']; // Ensure you have a valid URL
-    setupAudio(audioUrl);
+    String? audioUrl = widget.surahData['surah'] as String?;
+
+    // Check if audioUrl is not null
+    if (audioUrl != null && audioUrl.isNotEmpty) {
+      setupAudio(audioUrl);
+    } else {
+      print('Audio URL is null or empty');
+    }
   }
 
   void setupAudio(String url) async {
@@ -408,7 +420,7 @@ class _SurahDetailState extends State<SurahDetail> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.surahData['englishName']),
+        title: Text(widget.surahData['englishName'] ?? 'Surah'),
       ),
       body: Column(
         children: [
@@ -416,7 +428,9 @@ class _SurahDetailState extends State<SurahDetail> {
           Slider(
             min: 0,
             max: duration.inSeconds.toDouble(),
-            value: position.inSeconds.toDouble().clamp(0.0, duration.inSeconds.toDouble()),
+            value: position.inSeconds
+                .toDouble()
+                .clamp(0.0, duration.inSeconds.toDouble()),
             onChanged: (value) async {
               final newPosition = Duration(seconds: value.toInt());
               await audioPlayer.seek(newPosition);
@@ -434,7 +448,7 @@ class _SurahDetailState extends State<SurahDetail> {
                   padding: EdgeInsets.all(8.0),
                   child: ListTile(
                     title: Text(
-                      "${ayah['text']}",
+                      "${ayah['text'] ?? ''}",
                       style: TextStyle(fontSize: 20),
                     ),
                   ),
@@ -453,14 +467,14 @@ class _SurahDetailState extends State<SurahDetail> {
           }
         },
         child: Icon(
-          audioPlayer.state == PlayerState.playing ? Icons.pause : Icons.play_arrow,
+          audioPlayer.state == PlayerState.playing
+              ? Icons.pause
+              : Icons.play_arrow,
         ),
       ),
     );
   }
 }
-
-
 // class Sahifa extends StatefulWidget {
 //   @override
 //   State<Sahifa> createState() => _SahifaState();
