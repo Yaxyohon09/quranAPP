@@ -858,6 +858,7 @@ class _SahifaState extends State<Sahifa> {
                               "Quroni karimning\n  30 Pora",
                               style: TextStyle(
                                 fontSize: 20,
+                                color: Colors.black,
                                 fontWeight: FontWeight.w900,
                               ),
                             ),
@@ -905,7 +906,12 @@ class _SahifaState extends State<Sahifa> {
                               height: 150,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(20),
-                                color: Colors.white,
+                                color: const Color.fromARGB(
+                                  255,
+                                  0,
+                                  253,
+                                  8,
+                                ),
                               ),
                               child: Padding(
                                 padding: EdgeInsets.all(10),
@@ -920,18 +926,11 @@ class _SahifaState extends State<Sahifa> {
                                       ),
                                     ),
                                     Text(
-                                      "${data[index]['englishName']},   ",
+                                      "${data[index]['englishName']} surasi",
                                       style: TextStyle(
                                         fontSize: 20,
                                         color: Colors.black,
                                         fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                    Text(
-                                      data[index]['englishNameTranslation'],
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        color: Colors.black,
                                       ),
                                     ),
                                   ],
@@ -1063,7 +1062,9 @@ class _SurahDataState extends State<SurahData> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.salom['englishName'] ?? 'Surah'),
+        title: Text(
+          widget.salom['englishName'] ?? 'Surah',
+        ),
       ),
       body: Container(
         height: double.infinity,
